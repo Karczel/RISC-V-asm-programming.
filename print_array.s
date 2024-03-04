@@ -6,7 +6,7 @@ newline: .string "\n"
 main:
     la x5, A # load array A
     addi x8, x0, 0 # let x8 = i and set it to 0
-    addi x6, x0, 5 # get size of array
+    addi x6, x0, 5 # let x6 = size of array and set it to 5
     j print_array
 
 print_array:
