@@ -43,7 +43,7 @@ loop2:
     # then we add an offset of i*4 to the base address
     slli x18, x8, 2 # set x18 to i*4
     add x19, x18, x21 # add i*4 to the base address of arr2 and put it to x19
-    add x20, x8, x8 # set x20 to i + i(2*i)
+    add x20, x8, x8 # set x20 to i(2*i)
     sw x20, 0(x19) # arr2[i] = 2*i
     addi x8, x8, 1 # i++
     j loop2
