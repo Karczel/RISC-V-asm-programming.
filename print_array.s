@@ -1,32 +1,56 @@
 .data
-A:  .word 11, 22, 33, 44, 55
+A: .word 11, 22, 33, 44, 55
+B: .word 11, 22, 33, 44, 55, 66, 77, 88, 99, 1234
 newline: .string "\n"
+space: .string " "
 
 .text
 main:
-    la x5, A # load array A
-    addi x8, x0, 0 # let x8 = i and set it to 0
-    addi x6, x0, 5 # let x6 = size of array and set it to 5
-    j print_array
-
-print_array:
-    bge x8, x6, exit # i >= size
-    slli x18, x8, 2 #set x18 to i*4
-    add x19, x18, x5 #add i*4 to base address of A and put it to x19
-    lw x20, 0(x19) #x20 has A[i]
-
-    addi a0, x0, 1
-    add a1, x0, x20
+    la a0, A # loading the starting address of array A to a0
+    addi a1, x0, 5 # passing the array size value to a1
+    jal print_array
+    
+    # exit cleanly
+    addi a0, x0, 10
     ecall
 
+print_array:
+    addi t0, x0, 0 # let the i value be in t0
+loop1:
+    bge t0, a1, exit1
+    slli t1, t0, 2 # t1 has the i*4 value
+    add t2, t1, a0
+    lw t3, 0(t2) # t3 has the value of A[i]
+    
+    # print A[i]
+    
+    # save a0 and a1 on to the stack; caller save as ecall realizes that a0 and a1 needed after the call
+    addi sp, sp, -8
+    sw a0, 0(sp)
+    sw a1, 4(sp)
+    
+    addi a0, x0, 1
+    mv a1, t3
+    ecall
+
+    # print space
+    addi a0, x0, 4
+    la a1, space
+    ecall
+    
+    # restoring a0 and a1 to their original value
+    lw a0, 0(sp)
+    lw a1, 4(sp)
+    addi sp, sp, 8
+    
+    addi t0, t0, 1 # i++
+    j loop1
+    
+exit1:
+    # print newline
     addi a0, x0, 4
     la a1, newline
     ecall
-
-    addi x8, x8, 1 #i++
-    j print_array
-
-exit:
-    #exit cleanly
-    addi a0, x0, 10
-    ecall
+    
+    jr ra
+    
