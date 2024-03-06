@@ -48,6 +48,7 @@ dot_product_recursive:
     addi t0,t0,4 #a+1
     addi t1,t1,4 #b+1
     addi a0,a0,-1 #size-1
+    sw t0, 0(sp) #to be fixed a[0]
     jal dot_product_recursive
     
     #restore values
@@ -90,6 +91,7 @@ dot_product_recursive:
     #problem, first b called is wrong by 1 index
     
     #a[0]*b[0] + dot_product_recursive(a+1, b+1, size-1);
+    addi s1, s1, 1
     mul t5, s0, s1
     add a1, a1, t5
     
@@ -119,8 +121,8 @@ dot_product_recursive:
     jr ra
     
 else:
-    lw s0, 0(t0)
-    lw s1, 0(t1)
+    lw s0, -16(t0)
+    lw s1, -16(t1)
     mul t5, s0, s1
     add a1,a1,t5
     
