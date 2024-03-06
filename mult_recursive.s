@@ -25,10 +25,10 @@ mult:
     
     # a + mult(a, b - 1);
     #translating mult(a,b-1)
-    addi sp, sp, -4
-    sw a0, 0(sp)
-    addi a1, a1, -1
-    jal mult
+    addi sp, sp, -4 #make space
+    sw a0, 0(sp) # store a0
+    addi a1, a1, -1 #b - 1
+    jal mult #recursion back
     
     #restore original a0 to t1
     lw t1, 0(sp)
