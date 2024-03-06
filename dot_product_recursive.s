@@ -13,7 +13,7 @@ main:
     addi s0, x0, 0 #place result onto s0
     jal dot_product_recursive
     
-    mv s0, a1
+    mv s5, a1
     
     addi a0, x0, 4
     la a1, q
@@ -43,10 +43,8 @@ dot_product_recursive:
     sw t0, 0(sp)
     sw t1,4(sp)
     #a+1 ,b+1 ,size-1
-    #slli t0,t0, 2 #shift set a+1
-    #slli t1,t1, 2 #shift set b+1
-    addi t0,t0,4
-    addi t1,t1,4
+    addi t0,t0,4 #a+1
+    addi t1,t1,4 #a+1
     addi a0,a0,-1 #size-1
     sw t0, 0(sp) #to be fixed a[0]
     jal dot_product_recursive
@@ -55,13 +53,18 @@ dot_product_recursive:
     
     #get [0]
     lw t0, 0(sp)
-    lw t1, 0(sp)
+    lw t1, 4(sp)
     addi sp, sp, 8
     lw s0, 0(t0)
     lw s1, 0(t1)
     
+    #see value
     mv a3,a0
     mv a2, a1
+    
+    addi a0, x0, 4
+    la a1, newline
+    ecall
     
     addi a0, x0, 4
     la a1, newline
@@ -86,12 +89,34 @@ dot_product_recursive:
     mul t5, s0, s1
     add a1, a1, t5
     
+    #see value
+    mv a3,a0
+    mv a2, a1
+    
+    addi a0, x0, 4
+    la a1, newline
+    ecall
+    
+    addi a0,x0,1
+    mv a1,a2
+    ecall
+    
+    addi a0, x0, 4
+    la a1, newline
+    ecall
+    
+    mv a1,a2
+    mv a0,a3
+    
     jr ra
     
 else:
     #a[0]*b[0]
-    lw s0, 0(sp)
-    lw s1, 4(sp)
+    lw t0, 0(sp)
+    lw t1, 4(sp)
+    addi sp, sp, 8
+    lw s0, 0(t0)
+    lw s1, 0(t1)
     mul t5, s0, s1
     add a1, a1, t5
     jr ra
