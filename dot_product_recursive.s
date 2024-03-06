@@ -59,58 +59,11 @@ dot_product_recursive:
     lw s0, 0(t0)
     lw s1, 0(t1)
     
-    
-    #see value
-    mv a3,a0
-    mv a2, a1
-    
-    addi a0, x0, 4
-    la a1, newline
-    ecall
-    
-    addi a0, x0, 4
-    la a1, newline
-    ecall
-    
-    addi a0,x0,1
-    mv a1,s0
-    ecall
-    
-    addi a0, x0, 4
-    la a1, newline
-    ecall
-    
-    addi a0,x0,1
-    mv a1,s1
-    ecall
-    
-    mv a1,a2
-    mv a0,a3
-    
     #problem, first b called is wrong by 1 index
     
     #a[0]*b[0] + dot_product_recursive(a+1, b+1, size-1);
     mul t5, s0, s1
     add a1, a1, t5
-    
-    #see value
-    mv a3,a0
-    mv a2, a1
-    
-    addi a0, x0, 4
-    la a1, newline
-    ecall
-    
-    addi a0,x0,1
-    mv a1,t5
-    ecall
-    
-    addi a0, x0, 4
-    la a1, newline
-    ecall
-    
-    mv a1,a2
-    mv a0,a3
     
     #restore return
     lw ra, 0(sp)
